@@ -8,19 +8,30 @@
 
 
 class Settings{
+    friend Game;
 
+    CONST int MAX_DIFFICULTY = 1;
+    CONST int MAX_BUFF = 1;
 
     sf::RenderWindow * win;
     //game settings
-    int SHIP_SPEED = 5;
-    int BULLET_SPEED = -15; // negative to move up screen
-    int BULLET_SHOOT_DELAY = 10; //seconds * fps
-    int METEORITE_SPEED = 5;
-    int METEORITE_COUNT = 50;
-    int METEORITE_SPAWN_SPEED = 15; // seconds * fps
+    int shipSpeed = 5;
+    int bulletSpeed = -15; // negative to move up screen
+    int bulletShotDelay = 10; //seconds * fps
+    int meteoriteSpeed = 5;
+    int meteoriteSpawnLimit = 50;
+    int meteoriteSpawnSpeed = 15; // seconds * fps
+
+    float shipSpeedMultiple = 1.1;
+    float bulletSpeedMultiple = 1.1;
 
     public:
-    Settings(sf::RenderWindow *window);
+    int increaseShipSpeed();
+    int increaseBulletSpeed();
+    int decreaseBulletShotDelay();
+    int increaseMeteoriteSpeed();
+    int increaseMeteoriteSpawnSpeed();
+
 
 };
 

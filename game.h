@@ -15,6 +15,7 @@
 #include "meteorite.h"
 #include "score.h"
 #include "explosion.h"
+#include "settings.h"
 
 
 class Game{
@@ -26,6 +27,7 @@ class Game{
     std::vector<Meteorite*> meteorites;
     Score score;
     Explosion explosion;
+    Settings settings;
 
 
 

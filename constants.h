@@ -29,7 +29,14 @@ const std::string ARROW_RIGHT = "arrowRight.png";
 //font
 const std::string FONT = "arcadeFont.ttf";
 
-
+//game features
+const int MAX_DIFFICULTY = 1;
+const int MAX_BUFF = 1;
+const int MAX_SHIP_SPEED = 20;
+const int MAX_BULLET_SPEED = -50;
+const int MIN_BULLET_SHOT_DELAY = 3;
+const int MAX_METEORITE_SPEED = 20;
+const int MAX_METEORITE_SPAWN_SPEED = 3;
 
 
 
