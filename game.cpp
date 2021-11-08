@@ -79,7 +79,6 @@ void Game::gameLoop(){
         collisionLoop();
 
         if(collisionLoopShip()){
-            std::cout << "gameover\n";
             playing = false;
         }
 
@@ -94,6 +93,7 @@ void Game::gameLoop(){
 
         currentFrame++;
     }
+
     gameOver();
 
 
@@ -140,10 +140,10 @@ void Game::keyPressed(int currentFrame){
             bullets.push_back(generateBullet(BULLET_TEXTURE));
         }
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
         ship.move(-SHIP_SPEED, 0);
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
         ship.move(SHIP_SPEED, 0);
     // }
     // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
@@ -250,8 +250,7 @@ bool Game::collisionCheckShip(Meteorite* meteorite){
 void Game::gameOver(){
     int currentSprite = 0;
     int currentFrame = 0;
-    while(currentFrame != 14){
-            currentSprite++;
+    while(currentFrame != 13){
         
         win->clear();
 
@@ -272,7 +271,9 @@ void Game::gameOver(){
         win->display();
         win->setFramerateLimit(30);
         
+        currentSprite++;
     }
+
 }
 
 // void Game::adjustDifficulty(){

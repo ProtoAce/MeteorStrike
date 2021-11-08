@@ -9,6 +9,7 @@
 #include <time.h>
 #include <cmath>
 #include "spaceship.h"
+#include "constants.h"
 #include "settings.h"
 #include "bullet.h"
 #include "meteorite.h"

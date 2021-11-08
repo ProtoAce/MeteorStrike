@@ -47,6 +47,8 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "iostream": "cpp",
-        "meteorite.h": "c"
+        "meteorite.h": "c",
+        "graphics.hpp": "c",
+        "cinttypes": "c"
     }
 }
