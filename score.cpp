@@ -14,7 +14,7 @@ int Score::load(std::string fontFile){
     text.setFont(font);
     text.setCharacterSize(20);
     text.setFillColor(sf::Color::White);
-    text.setPosition(5.f, 465.f);
+    text.setPosition(5.f, WINDOW_HEIGHT - 35);
     text.setString("Score 0");
     return 0;
 }

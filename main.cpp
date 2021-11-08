@@ -7,7 +7,7 @@ int main()
 {
 
     
-    sf::RenderWindow window(sf::VideoMode(500, 500), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML works!");
     MainMenu menu(&window);
 
     menu.start();

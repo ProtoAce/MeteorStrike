@@ -49,6 +49,7 @@
         "iostream": "cpp",
         "meteorite.h": "c",
         "graphics.hpp": "c",
-        "cinttypes": "c"
+        "cinttypes": "c",
+        "constants.h": "c"
     }
 }

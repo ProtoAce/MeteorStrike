@@ -17,6 +17,7 @@ class Meteorite{
     sf::Texture meteoriteTexture;
     sf::Sprite meteoriteSprite;
     sf::RenderWindow *win;
+    Settings settings;
 
     int size, health;
 

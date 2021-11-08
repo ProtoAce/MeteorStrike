@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "constants.h"
 
 
 class Score{
@@ -17,6 +18,7 @@ class Score{
     int size, health;
 
     public:
+    friend class Game;
 
     Score(sf::RenderWindow *window);
     float getX();

@@ -4,7 +4,7 @@ Meteorite::Meteorite(sf::RenderWindow * window, int meteoriteSize){
     size = meteoriteSize; 
     health = meteoriteSize;
     win = window;
-    yVelocity = METEORITE_SPEED;
+    yVelocity = settings.meteoriteSpeed;
 }
 
 

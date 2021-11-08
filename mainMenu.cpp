@@ -20,19 +20,19 @@ int MainMenu::load(std::string fontFile){
     play.setFont(font);
     play.setCharacterSize(20);
     play.setFillColor(sf::Color::White);
-    play.setPosition(150.f,200.f);
+    play.setPosition(150.f,350.f);
     play.setString("Play");
 
     highScores.setFont(font);
     highScores.setCharacterSize(20);
     highScores.setFillColor(sf::Color::White);
-    highScores.setPosition(150.f,260.f);
+    highScores.setPosition(150.f,410.f);
     highScores.setString("HighScores");
 
     exit.setFont(font);
     exit.setCharacterSize(20);
     exit.setFillColor(sf::Color::White);
-    exit.setPosition(150.f,320.f);
+    exit.setPosition(150.f,470.f);
     exit.setString("Exit");
 
     if(!arrowLeftTexture.loadFromFile(ARROW_LEFT)){
@@ -58,16 +58,16 @@ void MainMenu::draw(){
 void MainMenu::drawSelection(int menuOption){
     switch(menuOption){
         case 0:
-            arrowRightSprite.setPosition(120.f, 202.f);
-            arrowLeftSprite.setPosition(360.f, 202.f);
+            arrowRightSprite.setPosition(120.f, 352.f);
+            arrowLeftSprite.setPosition(360.f, 352.f);
             break;
         case 1:
-            arrowRightSprite.setPosition(120.f, 262.f);
-            arrowLeftSprite.setPosition(360.f, 262.f);
+            arrowRightSprite.setPosition(120.f, 412.f);
+            arrowLeftSprite.setPosition(360.f, 412.f);
             break;
         case 2:
-            arrowRightSprite.setPosition(120.f, 322.f);
-            arrowLeftSprite.setPosition(360.f, 322.f);
+            arrowRightSprite.setPosition(120.f, 472.f);
+            arrowLeftSprite.setPosition(360.f, 472.f);
             break;
     }
     win->draw(arrowRightSprite);

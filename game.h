@@ -16,6 +16,7 @@
 #include "score.h"
 #include "explosion.h"
 #include "settings.h"
+#include "constants.h"
 
 
 class Game{
@@ -59,6 +60,10 @@ class Game{
 
     Bullet* generateBullet(std::string textureFile);
     Meteorite* generateMeteorite(std::string textureFile, int size);
+
+    int scaleDifficulty(int scaleOption);
+    int scaleBuffs(int scaleOption);
+
 
     void gameOver();
 

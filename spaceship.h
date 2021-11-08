@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
-
+#include "constants.h"
 class SpaceShip{
     float x,y;
     int level; 

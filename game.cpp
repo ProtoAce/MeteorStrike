@@ -19,6 +19,10 @@ void Game::start(){
 
 void Game::gameLoop(){
     int currentFrame = 1;
+    int difficultyScaleType = 0;
+    int buffScaleType = 0;
+    int prevBuffScoreMultiple = 1;
+    int prevDifficultyScoreMultiple = 1;
     bool playing = true;
 
     while(playing && win->isOpen()){
@@ -30,6 +34,26 @@ void Game::gameLoop(){
         }
         keyPressed(currentFrame);
 
+        if(currentFrame % settings.bulletShotDelay == 0){
+            bullets.push_back(generateBullet(BULLET_TEXTURE));
+        }
+
+        if(score.score > 0){
+            if(score.score >= DIFFICULTY_SCALE_RATE*prevDifficultyScoreMultiple){
+                prevDifficultyScoreMultiple++;
+                scaleDifficulty(difficultyScaleType);
+                difficultyScaleType = (difficultyScaleType + 1)%2;
+            }
+
+            if(score.score >= BUFF_SCALE_RATE*prevBuffScoreMultiple){
+                prevBuffScoreMultiple++;
+                scaleBuffs(buffScaleType);
+                buffScaleType = (buffScaleType + 1)%3;
+            }
+        }
+
+
+
         win->clear();
 
         //bullets
@@ -39,7 +63,7 @@ void Game::gameLoop(){
                 bullets.erase(i);
                 i--;
             }else{
-                (*i)->move(BULLET_SPEED);
+                (*i)->move(settings.bulletSpeed);
                 (*i)->draw();
             }
         } 
@@ -48,8 +72,9 @@ void Game::gameLoop(){
         ship.draw();
 
         //meteorite
-        if(meteorites.size() < METEORITE_COUNT){
-            if(currentFrame % METEORITE_SPAWN_SPEED == 0){
+        if(meteorites.size() < settings.meteoriteSpawnLimit){
+            if(currentFrame % settings.meteoriteSpawnSpeed == 0){
+
                 switch(randomNumberGenerator(1,3)){
                     case(1):
                         meteorites.push_back(generateMeteorite(METEORITE_TEXTURE1, 1));
@@ -69,7 +94,7 @@ void Game::gameLoop(){
             //std::cout<< "meteorite Count: " << meteorites.size() << "\n";
             (*i)->move();
             (*i)->draw();
-            if((*i)->getX() < 0 || (*i)->getX() > 500 || (*i)->getY() > 500){
+            if((*i)->getX() < 0 || (*i)->getX() > WINDOW_WIDTH || (*i)->getY() > WINDOW_HEIGHT){
                 meteorites.erase(i);
                 i--;
             }
@@ -135,16 +160,16 @@ Meteorite* Game::generateMeteorite(std::string textureFile, int size){
 
 
 void Game::keyPressed(int currentFrame){
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
-        if(currentFrame % BULLET_SHOOT_DELAY == 0){
-            bullets.push_back(generateBullet(BULLET_TEXTURE));
-        }
-    }
+    // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
+    //     if(currentFrame % settings.bulletShotDelay == 0){
+    //         bullets.push_back(generateBullet(BULLET_TEXTURE));
+    //     }
+    // }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-        ship.move(-SHIP_SPEED, 0);
+        ship.move(-settings.shipSpeed, 0);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        ship.move(SHIP_SPEED, 0);
+        ship.move(settings.shipSpeed, 0);
     // }
     // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
     //     ship.move(0, -SHIP_SPEED);
@@ -167,7 +192,7 @@ int Game::randomNumberGenerator(int startRange, int endRange){
 // }
 
 int Game::RandomXForMeteorite(){
-    return randomNumberGenerator(0,500);
+    return randomNumberGenerator(0,WINDOW_WIDTH);
 }
 
 bool Game::collisionLoop(){
@@ -276,6 +301,42 @@ void Game::gameOver(){
 
 }
 
-// void Game::adjustDifficulty(){
-//     if(score.score%)
-// }
+int Game::scaleDifficulty(int scaleOption){
+    int maxDifficulty = 0;
+    switch(scaleOption){
+        case 0:
+            settings.increaseMeteoriteSpeed();
+            std::cout << "increaseMeteoriteSpeed\n";
+            break;
+        case 1: 
+            settings.increaseMeteoriteSpawnSpeed();
+            std::cout << "increaseMeteoriteSpawnSpeed\n";
+
+            break;
+    }
+    return 0;
+
+}
+
+int Game::scaleBuffs(int scaleOption){
+    int maxDifficulty = 0;
+    switch(scaleOption){
+        case 0:
+            settings.increaseShipSpeed();
+            std::cout << "increaseShipSpeed\n";
+
+            break;
+        case 1: 
+            settings.increaseBulletSpeed();
+            std::cout << "increaseBulletSpeed\n";
+
+            break;
+        case 2: 
+            settings.decreaseBulletShotDelay();
+            std::cout << "decreaseBulletShotDelay\n";
+
+            break;
+    }
+    return 0;
+
+}

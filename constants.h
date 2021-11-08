@@ -5,8 +5,8 @@
 #include <vector>
 
 //window size
-const double WINDOW_HEIGHT = 500;
-const double WINDOW_WIDTH = 500;
+const double WINDOW_HEIGHT = 650;
+const double WINDOW_WIDTH = 650;
 
 //textures
 const std::string BULLET_TEXTURE = "bullet.png";
@@ -36,7 +36,9 @@ const int MAX_SHIP_SPEED = 20;
 const int MAX_BULLET_SPEED = -50;
 const int MIN_BULLET_SHOT_DELAY = 3;
 const int MAX_METEORITE_SPEED = 20;
-const int MAX_METEORITE_SPAWN_SPEED = 3;
+const int MAX_METEORITE_SPAWN_SPEED = 5;
+const int BUFF_SCALE_RATE = 15;
+const int DIFFICULTY_SCALE_RATE = 3;
 
 
 
