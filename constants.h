@@ -9,6 +9,7 @@ const double WINDOW_HEIGHT = 650;
 const double WINDOW_WIDTH = 650;
 
 //textures
+const std::string TITLE = "MetoerStrike.png";
 const std::string BULLET_TEXTURE = "bullet.png";
 const std::string SHIP_TEXTURE = "spaceshiplvl2.png";
 const std::string METEORITE_TEXTURE1 = "meteorite1(1).png";
@@ -24,6 +25,7 @@ const std::vector<std::string> EXPLOSTION_TEXTURES = {"explosion1.png", "explosi
 
 const std::string ARROW_LEFT = "arrowLeft.png";
 const std::string ARROW_RIGHT = "arrowRight.png";
+const std::string HIGHSCORE_FILE = "highscores.txt";
 
 
 //font
@@ -37,8 +39,8 @@ const int MAX_BULLET_SPEED = -50;
 const int MIN_BULLET_SHOT_DELAY = 3;
 const int MAX_METEORITE_SPEED = 20;
 const int MAX_METEORITE_SPAWN_SPEED = 5;
-const int BUFF_SCALE_RATE = 15;
-const int DIFFICULTY_SCALE_RATE = 3;
+const int BUFF_SCALE_RATE = 10;
+const int DIFFICULTY_SCALE_RATE = 5;
 
 
 

@@ -7,13 +7,15 @@ Game::Game(sf::RenderWindow *window) : ship(window), score(window), explosion(wi
 
 Game::~Game(){}
 
-void Game::start(){
+int Game::start(){
     
     if(loadResources() == EXIT_FAILURE){
-        return;
+        return 0;
     }
 
     gameLoop();
+
+    return score.score;
 
 }
 
@@ -58,7 +60,6 @@ void Game::gameLoop(){
 
         //bullets
         for(std::vector<Bullet*>::iterator i = bullets.begin(); i != bullets.end(); i++){
-            //std::cout<< "bullet Count: " << bullets.size() << "\n";
             if((*i)->getY() <= 0){
                 bullets.erase(i);
                 i--;
@@ -91,7 +92,6 @@ void Game::gameLoop(){
 
         }
         for(std::vector<Meteorite*>::iterator i = meteorites.begin(); i != meteorites.end(); i++){
-            //std::cout<< "meteorite Count: " << meteorites.size() << "\n";
             (*i)->move();
             (*i)->draw();
             if((*i)->getX() < 0 || (*i)->getX() > WINDOW_WIDTH || (*i)->getY() > WINDOW_HEIGHT){
@@ -148,7 +148,7 @@ Bullet* Game::generateBullet(std::string textureFile){
 
 Meteorite* Game::generateMeteorite(std::string textureFile, int size){
     Meteorite* newMeteorite = new Meteorite(win, size);
-    if(newMeteorite->load(textureFile, RandomXForMeteorite(), -1) == EXIT_FAILURE){
+    if(newMeteorite->load(textureFile, RandomXForMeteorite(), -50) == EXIT_FAILURE){
         std::cout << "Load Failure\n";
         exit(1);
     }
@@ -306,12 +306,9 @@ int Game::scaleDifficulty(int scaleOption){
     switch(scaleOption){
         case 0:
             settings.increaseMeteoriteSpeed();
-            std::cout << "increaseMeteoriteSpeed\n";
             break;
         case 1: 
             settings.increaseMeteoriteSpawnSpeed();
-            std::cout << "increaseMeteoriteSpawnSpeed\n";
-
             break;
     }
     return 0;
@@ -323,18 +320,12 @@ int Game::scaleBuffs(int scaleOption){
     switch(scaleOption){
         case 0:
             settings.increaseShipSpeed();
-            std::cout << "increaseShipSpeed\n";
-
             break;
         case 1: 
             settings.increaseBulletSpeed();
-            std::cout << "increaseBulletSpeed\n";
-
             break;
         case 2: 
             settings.decreaseBulletShotDelay();
-            std::cout << "decreaseBulletShotDelay\n";
-
             break;
     }
     return 0;

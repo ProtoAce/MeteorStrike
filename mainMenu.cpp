@@ -1,8 +1,12 @@
 #include "mainMenu.h"
 
-MainMenu::MainMenu(sf::RenderWindow *window){
+MainMenu::MainMenu(sf::RenderWindow *window):leaderBoard(window){
     win = window;
 };
+
+MainMenu::~MainMenu(){
+    leaderBoard.saveToFile();
+}
 
 
 void MainMenu::start(){
@@ -17,22 +21,26 @@ int MainMenu::load(std::string fontFile){
     if(!font.loadFromFile(fontFile)){
         return EXIT_FAILURE;
     }
+
+    leaderBoard.loadFromFile();
+
+    sf::Color brown(139,104,75,200);
     play.setFont(font);
     play.setCharacterSize(20);
-    play.setFillColor(sf::Color::White);
-    play.setPosition(150.f,350.f);
+    play.setFillColor(brown);
+    play.setPosition(150.f,400.f);
     play.setString("Play");
 
     highScores.setFont(font);
     highScores.setCharacterSize(20);
-    highScores.setFillColor(sf::Color::White);
-    highScores.setPosition(150.f,410.f);
+    highScores.setFillColor(brown);
+    highScores.setPosition(150.f,460.f);
     highScores.setString("HighScores");
 
     exit.setFont(font);
     exit.setCharacterSize(20);
-    exit.setFillColor(sf::Color::White);
-    exit.setPosition(150.f,470.f);
+    exit.setFillColor(brown);
+    exit.setPosition(150.f,520.f);
     exit.setString("Exit");
 
     if(!arrowLeftTexture.loadFromFile(ARROW_LEFT)){
@@ -45,6 +53,13 @@ int MainMenu::load(std::string fontFile){
     }
     arrowRightSprite.setTexture(arrowRightTexture);
 
+    if(!titleTexture.loadFromFile(TITLE)){
+        return EXIT_FAILURE;
+    }
+    titleSprite.setTexture(titleTexture);
+    titleSprite.setPosition(50.f,25.f);
+
+
 
     return 0;
 }
@@ -53,21 +68,22 @@ void MainMenu::draw(){
     win->draw(play);
     win->draw(highScores);
     win->draw(exit);
+    win->draw(titleSprite);
 }
 
 void MainMenu::drawSelection(int menuOption){
     switch(menuOption){
         case 0:
-            arrowRightSprite.setPosition(120.f, 352.f);
-            arrowLeftSprite.setPosition(360.f, 352.f);
+            arrowRightSprite.setPosition(120.f, 402.f);
+            arrowLeftSprite.setPosition(360.f, 402.f);
             break;
         case 1:
-            arrowRightSprite.setPosition(120.f, 412.f);
-            arrowLeftSprite.setPosition(360.f, 412.f);
+            arrowRightSprite.setPosition(120.f, 462.f);
+            arrowLeftSprite.setPosition(360.f, 462.f);
             break;
         case 2:
-            arrowRightSprite.setPosition(120.f, 472.f);
-            arrowLeftSprite.setPosition(360.f, 472.f);
+            arrowRightSprite.setPosition(120.f, 522.f);
+            arrowLeftSprite.setPosition(360.f, 522.f);
             break;
     }
     win->draw(arrowRightSprite);
@@ -77,9 +93,11 @@ void MainMenu::drawSelection(int menuOption){
 void MainMenu::gameOption(int menuOption, bool &playing){
     if(menuOption == 0){
         Game game(win);
-        game.start();
+        int score;
+        score = game.start();
+        leaderBoard.addScore(score);
     }else if(menuOption == 1){
-        //leaderboard;
+        leaderBoard.highScoreLoop();
     }else if(menuOption == 2){
         playing = false;
     }

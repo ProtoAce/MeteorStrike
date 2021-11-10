@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include "game.h"
+#include "highscores.h"
 
 
 class MainMenu{
@@ -16,12 +17,19 @@ class MainMenu{
     sf::Text exit;
     sf::Texture arrowLeftTexture;
     sf::Texture arrowRightTexture;
+    sf::Texture titleTexture;
     sf::Sprite arrowLeftSprite;
     sf::Sprite arrowRightSprite;
+    sf::Sprite titleSprite;
+
+    Highscores leaderBoard;
+
+
 
     public:
 
     MainMenu(sf::RenderWindow *window);
+    ~MainMenu();
 
     void start();
 

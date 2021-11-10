@@ -20,7 +20,7 @@ class Settings{
     int bulletSpeed = -15; // negative to move up screen
     int meteoriteSpeed = 5;
     int meteoriteSpawnLimit = 50;
-    int meteoriteSpawnSpeed = 15; // seconds * fps
+    int meteoriteSpawnSpeed = 20; // seconds * fps
 
     float shipSpeedMultiple = 1.1;
     float bulletSpeedMultiple = 1.1;

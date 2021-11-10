@@ -37,7 +37,7 @@ class Game{
 
     ~Game();
 
-    void start();
+    int start();
 
 
     int loadResources();
