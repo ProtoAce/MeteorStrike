@@ -59,9 +59,11 @@ void Game::gameLoop(){
 
             if(score.score >= POWER_UP_RATE*prevPowerUpMultiple){
                 prevPowerUpMultiple++;
-                shield = new Shield(win, SHIELD, randomX());
-                shield->load();
-                shield->loadShield();
+                if(shield == nullptr){
+                    shield = new Shield(win, SHIELD, randomX());
+                    shield->load();
+                    shield->loadShield();
+                }
 
             }
         }
@@ -82,6 +84,7 @@ void Game::gameLoop(){
         //bullets
         for(std::vector<Bullet*>::iterator i = bullets.begin(); i != bullets.end(); i++){
             if((*i)->getY() <= 0){
+                delete *i;
                 bullets.erase(i);
                 i--;
             }else{
@@ -115,7 +118,8 @@ void Game::gameLoop(){
         for(std::vector<Meteorite*>::iterator i = meteorites.begin(); i != meteorites.end(); i++){
             (*i)->move();
             (*i)->draw();
-            if((*i)->getX() < 0 || (*i)->getX() > WINDOW_WIDTH || (*i)->getY() > WINDOW_HEIGHT){
+            if((*i)->getX() < -25 || (*i)->getX() > WINDOW_WIDTH || (*i)->getY() > WINDOW_HEIGHT){
+                delete *i;
                 meteorites.erase(i);
                 i--;
             }
@@ -128,7 +132,7 @@ void Game::gameLoop(){
             }else{
                 shield->move();
                 shield->draw();
-                if(shield->xToken > 600){
+                if(shield->yToken > 600){
                     delete shield;
                     shield = nullptr;
                 }
@@ -140,7 +144,8 @@ void Game::gameLoop(){
 
         if(collisionLoopShip()){
             if(shield != nullptr && shield->enabled){
-                shield->disable();
+                delete shield;
+                shield = nullptr;
             }else{
                 playing = false;
             }
@@ -331,6 +336,7 @@ bool Game::collisionLoopPowerUp(){
     if(shield != nullptr){
         for(std::vector<Bullet*>::iterator itBullet = bullets.begin(); itBullet != bullets.end(); itBullet++){
             if(collisionCheckPowerUp((*itBullet), shield)){
+                delete *itBullet;
                 bullets.erase(itBullet);
                 itBullet--;
                 shield->enabled = true;

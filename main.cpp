@@ -7,7 +7,7 @@ int main()
 {
 
     
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Meteor Strike");
     MainMenu menu(&window);
 
     menu.start();

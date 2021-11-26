@@ -20,9 +20,8 @@ int GameMusic::load(){
     //     std::cout << "test2\n";
     // }
 
-
-
-    random_shuffle(songs.begin(), songs.end());
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::shuffle(songs.begin(), songs.end(), std::default_random_engine(seed));
 
     if (!music.openFromFile(songs.at(currentSong))){
         return EXIT_FAILURE;
@@ -59,7 +58,7 @@ void GameMusic::play(){
 bool GameMusic::songEnded(){
     if(playing == true){
         if(music.getStatus() == sf::SoundSource::Stopped){
-            currentSong++;
+            currentSong = (currentSong + 1)%songs.size();
             return true;
         }
     }

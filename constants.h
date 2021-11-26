@@ -33,7 +33,14 @@ const std::string RAPID_SHOT_TOKEN_TEXTURE = "assets/sprites/rapidShotToken.png"
 const std::string RAPID_SHOT_TEXTURE = "assets/sprites/rapidShot.png";
 const std::string PAUSE_TEXTURE = "assets/sprites/pause.png";
 const std::string PLAY_TEXTURE = "assets/sprites/play.png";
-const std::string SONG_1 = "assets/audio/8bit/AdhesiveWombat-NightShade.ogg";
+const std::string SONG_1 = "assets/audio/songs/AdhesiveWombat-NightShade.ogg";
+const std::string SONG_2 = "assets/audio/songs/Density-Time-MAZE.ogg";
+const std::string SONG_3 = "assets/audio/songs/Eric-Skiff-A-Night-Of-Dizzy-Spells.ogg";
+const std::string SONG_4 = "assets/audio/songs/Jeremy-Blake-Powerup_.ogg";
+const std::string SONG_5 = "assets/audio/songs/Jorge-Hernandez-Chopsticks.ogg";
+const std::string SONG_6 = "assets/audio/songs/Joshua-McLean-Mountain-Trials.ogg";
+const std::string SONG_7 = "assets/audio/songs/Krayzius-_-Brainstorm-Virtual-Boy.ogg";
+
 //font
 const std::string FONT = "assets/font/arcadeFont.ttf";
 

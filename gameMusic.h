@@ -5,9 +5,11 @@
 #include <SFML/Audio.hpp>
 #include <vector>
 #include <string>
+#include <random>
+#include <chrono>
+#include <algorithm>
 #include "settings.h"
 #include "constants.h"
-#include "powerUps.h"
 
 class GameMusic{
 
@@ -22,7 +24,9 @@ class GameMusic{
     sf::RenderWindow *win;
 
 
-    std::vector<std::string> songs{SONG_1};
+    std::vector<std::string> songs{SONG_1, SONG_2, SONG_3,
+                                   SONG_4, SONG_5, SONG_6,
+                                   SONG_7};
     sf::Music music;
 
 

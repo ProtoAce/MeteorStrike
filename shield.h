@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "settings.h"
 #include "constants.h"
-#include "powerUps.h"
+#include "powerUp.h"
 
 class Shield: public PowerUp{
 

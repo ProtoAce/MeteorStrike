@@ -19,7 +19,7 @@
 #include "settings.h"
 #include "constants.h"
 #include "background.h"
-#include "powerUps.h"
+#include "powerUp.h"
 #include "shield.h"
 #include "gameMusic.h"
 

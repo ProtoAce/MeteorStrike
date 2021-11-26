@@ -46,11 +46,11 @@ void Highscores::saveToFile(){
 }
 
 void Highscores::addScore(int score){
-    if(highScoreCount < 10 || score > highScores.back()){
-        if(highScoreCount < 10){
+    if(highScoreCount < 11 || score > highScores.back()){
+        if(highScoreCount < 11){
             highScoreCount++;
         }
-        if(highScoreCount >= 10){
+        if(highScoreCount >= 11){
             highScores.pop_back();
         }
         highScores.push_back(score);
