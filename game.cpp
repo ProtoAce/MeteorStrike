@@ -1,7 +1,8 @@
 #include "game.h"
 
-Game::Game(sf::RenderWindow *window) : ship(window), score(window), explosion(window){
+Game::Game(sf::RenderWindow *window, GameMusic *musicVar) : ship(window), score(window), explosion(window), background(window){
     win = window;
+    music = musicVar;
     srand(time(NULL));//generates random seed
 };
 
@@ -25,6 +26,9 @@ void Game::gameLoop(){
     int buffScaleType = 0;
     int prevBuffScoreMultiple = 1;
     int prevDifficultyScoreMultiple = 1;
+    int prevPowerUpMultiple = 1;
+    shield = nullptr;
+
     bool playing = true;
 
     while(playing && win->isOpen()){
@@ -44,7 +48,7 @@ void Game::gameLoop(){
             if(score.score >= DIFFICULTY_SCALE_RATE*prevDifficultyScoreMultiple){
                 prevDifficultyScoreMultiple++;
                 scaleDifficulty(difficultyScaleType);
-                difficultyScaleType = (difficultyScaleType + 1)%2;
+                difficultyScaleType = (difficultyScaleType + 1)%4;
             }
 
             if(score.score >= BUFF_SCALE_RATE*prevBuffScoreMultiple){
@@ -52,11 +56,28 @@ void Game::gameLoop(){
                 scaleBuffs(buffScaleType);
                 buffScaleType = (buffScaleType + 1)%3;
             }
+
+            if(score.score >= POWER_UP_RATE*prevPowerUpMultiple){
+                prevPowerUpMultiple++;
+                shield = new Shield(win, SHIELD, randomX());
+                shield->load();
+                shield->loadShield();
+
+            }
+        }
+        //background.move();
+
+        //plays next song if song ended
+        if(music->songEnded()){
+            if(music->nextSong() == EXIT_FAILURE){
+                return;
+            }
         }
 
-
-
         win->clear();
+
+        //background
+        //background.draw();
 
         //bullets
         for(std::vector<Bullet*>::iterator i = bullets.begin(); i != bullets.end(); i++){
@@ -89,8 +110,8 @@ void Game::gameLoop(){
 
                 }
             }
-
         }
+
         for(std::vector<Meteorite*>::iterator i = meteorites.begin(); i != meteorites.end(); i++){
             (*i)->move();
             (*i)->draw();
@@ -100,14 +121,36 @@ void Game::gameLoop(){
             }
         } 
 
+        if(shield != nullptr){
+            if(shield->enabled){
+                shield->moveShield(ship.getX(), ship.getY());
+                shield->drawShield();
+            }else{
+                shield->move();
+                shield->draw();
+                if(shield->xToken > 600){
+                    delete shield;
+                    shield = nullptr;
+                }
+            }
+        }
+
         //deletes any hit meteorites and adds score accordingly
         collisionLoop();
 
         if(collisionLoopShip()){
-            playing = false;
+            if(shield != nullptr && shield->enabled){
+                shield->disable();
+            }else{
+                playing = false;
+            }
         }
-
-
+        
+        //checks for powerUp collisions;
+        if(collisionLoopPowerUp()){
+            shield->enable();
+            shield->moveOffScreen();
+        }
 
         score.draw();
     
@@ -134,6 +177,9 @@ int Game::loadResources(){
     if(explosion.load(EXPLOSTION_TEXTURES) == EXIT_FAILURE){
         return EXIT_FAILURE;
     }
+    if(background.load(BACKGROUND_STARS) == EXIT_FAILURE){
+        return EXIT_FAILURE;
+    }
     return 0;
 }
 
@@ -147,8 +193,8 @@ Bullet* Game::generateBullet(std::string textureFile){
 }
 
 Meteorite* Game::generateMeteorite(std::string textureFile, int size){
-    Meteorite* newMeteorite = new Meteorite(win, size);
-    if(newMeteorite->load(textureFile, RandomXForMeteorite(), -50) == EXIT_FAILURE){
+    Meteorite* newMeteorite = new Meteorite(win, size, settings);
+    if(newMeteorite->load(textureFile, randomX(), -50) == EXIT_FAILURE){
         std::cout << "Load Failure\n";
         exit(1);
     }
@@ -191,7 +237,7 @@ int Game::randomNumberGenerator(int startRange, int endRange){
 
 // }
 
-int Game::RandomXForMeteorite(){
+int Game::randomX(){
     return randomNumberGenerator(0,WINDOW_WIDTH);
 }
 
@@ -217,6 +263,8 @@ bool Game::collisionLoop(){
 bool Game::collisionLoopShip(){
     for(std::vector<Meteorite*>::iterator itMeteorite = meteorites.begin(); itMeteorite != meteorites.end(); itMeteorite++){
         if(collisionCheckShip(*itMeteorite)){
+            meteorites.erase(itMeteorite);
+            itMeteorite--;
             return true;
         }
     }
@@ -258,14 +306,38 @@ bool Game::collisionCheckShip(Meteorite* meteorite){
             meteoriteRadius = 25;
             break;
     }
-    if(ship.getY()-meteorite->getY()-meteoriteRadius*2 <= 0 &&
-       ship.getY()-meteorite->getY() >= -60){
+    if(ship.getY()-meteorite->getY()-meteoriteRadius*2 <= 0 && //checking for meteorite to be in between
+       ship.getY()-meteorite->getY() >= -60){                  //top and bottom of ship
         if(meteorite->getX() >= ship.getX()-2*meteoriteRadius &&
            meteorite->getX() <= ship.getX() + 40){
             return true;
 
         }
         
+    }
+    return false;
+}
+
+bool Game::collisionCheckPowerUp(Bullet* bullet, PowerUp* powerUp){
+    if(sqrt(pow(bullet->getX()-powerUp->xToken-12.5,2) 
+           +pow(bullet->getY()-powerUp->yToken-12.5,2)) 
+                                 <= 12.5){
+        return true;
+    }
+    return false;
+}
+
+bool Game::collisionLoopPowerUp(){
+    if(shield != nullptr){
+        for(std::vector<Bullet*>::iterator itBullet = bullets.begin(); itBullet != bullets.end(); itBullet++){
+            if(collisionCheckPowerUp((*itBullet), shield)){
+                bullets.erase(itBullet);
+                itBullet--;
+                shield->enabled = true;
+                break;
+            }
+
+        }
     }
     return false;
 }
@@ -302,21 +374,16 @@ void Game::gameOver(){
 }
 
 int Game::scaleDifficulty(int scaleOption){
-    int maxDifficulty = 0;
-    switch(scaleOption){
-        case 0:
-            settings.increaseMeteoriteSpeed();
-            break;
-        case 1: 
-            settings.increaseMeteoriteSpawnSpeed();
-            break;
+    if(scaleOption < 3){
+        settings.increaseMeteoriteSpawnSpeed();
+        std::cout << "meteorSpeed: " << std::to_string(settings.meteoriteSpeed) << "\n";
+    }else{
+        settings.increaseMeteoriteSpeed();
     }
     return 0;
-
 }
 
 int Game::scaleBuffs(int scaleOption){
-    int maxDifficulty = 0;
     switch(scaleOption){
         case 0:
             settings.increaseShipSpeed();

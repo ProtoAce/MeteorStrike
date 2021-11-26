@@ -23,7 +23,7 @@ class Meteorite{
 
     public:
 
-    Meteorite(sf::RenderWindow *window, int meteoriteSize);
+    Meteorite(sf::RenderWindow *window, int meteoriteSize, const Settings &setting);
     float getX();
     float getY();
     int getSize();

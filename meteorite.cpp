@@ -1,6 +1,6 @@
 #include "meteorite.h"
 
-Meteorite::Meteorite(sf::RenderWindow * window, int meteoriteSize){
+Meteorite::Meteorite(sf::RenderWindow * window, int meteoriteSize, const Settings &setting):settings(setting){
     size = meteoriteSize; 
     health = meteoriteSize;
     win = window;

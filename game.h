@@ -2,6 +2,7 @@
 #define GAME
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <string>
 #include <iostream>
 #include <vector>
@@ -17,23 +18,28 @@
 #include "explosion.h"
 #include "settings.h"
 #include "constants.h"
+#include "background.h"
+#include "powerUps.h"
+#include "shield.h"
+#include "gameMusic.h"
 
 
 class Game{
 
 
     sf::RenderWindow * win;
+    GameMusic * music;
     SpaceShip ship;
     std::vector<Bullet*> bullets;
     std::vector<Meteorite*> meteorites;
     Score score;
     Explosion explosion;
     Settings settings;
-
-
+    Background background;
+    Shield *shield;
 
     public:
-    Game(sf::RenderWindow *window);
+    Game(sf::RenderWindow *window, GameMusic *musicVar);
 
     ~Game();
 
@@ -49,7 +55,7 @@ class Game{
     void keyPressed(int currentFrame);
 
     int randomNumberGenerator(int startRange, int endRange);
-    int RandomXForMeteorite();
+    int randomX();
 
     // int RandomYForMeteorite();
 
@@ -57,6 +63,11 @@ class Game{
     bool collisionLoopShip();
     bool collisionCheck(Bullet* bullet, Meteorite* meteorite);
     bool collisionCheckShip(Meteorite* meteorite);
+    bool collisionCheckPowerUp(Bullet* bullet, PowerUp* powerUp);
+    bool collisionLoopPowerUp();
+
+
+
 
     Bullet* generateBullet(std::string textureFile);
     Meteorite* generateMeteorite(std::string textureFile, int size);

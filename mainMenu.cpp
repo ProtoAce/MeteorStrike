@@ -2,6 +2,7 @@
 
 MainMenu::MainMenu(sf::RenderWindow *window):leaderBoard(window){
     win = window;
+    music = new GameMusic(window);
 };
 
 MainMenu::~MainMenu(){
@@ -13,6 +14,11 @@ void MainMenu::start(){
     if(load(FONT) == EXIT_FAILURE){
         return;
     }
+    if(music->load() == EXIT_FAILURE){
+        return;
+    }
+    music->play();
+
 
     menuLoop();
 }
@@ -59,8 +65,6 @@ int MainMenu::load(std::string fontFile){
     titleSprite.setTexture(titleTexture);
     titleSprite.setPosition(50.f,25.f);
 
-
-
     return 0;
 }
 
@@ -92,7 +96,7 @@ void MainMenu::drawSelection(int menuOption){
 
 void MainMenu::gameOption(int menuOption, bool &playing){
     if(menuOption == 0){
-        Game game(win);
+        Game game(win, music);
         int score;
         score = game.start();
         leaderBoard.addScore(score);
@@ -132,6 +136,13 @@ void MainMenu::menuLoop(){
                 }
             }
         }  
+
+        //check if song has ended
+        if(music->songEnded()){
+            if(music->nextSong() == EXIT_FAILURE){
+                return;
+            }
+        }
 
 
         win->clear();

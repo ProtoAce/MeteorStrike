@@ -2,10 +2,12 @@
 #define MAIN_MENU
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <string>
 #include <iostream>
 #include "game.h"
 #include "highscores.h"
+#include "gameMusic.h"
 
 
 class MainMenu{
@@ -23,6 +25,7 @@ class MainMenu{
     sf::Sprite titleSprite;
 
     Highscores leaderBoard;
+    GameMusic *music;
 
 
 

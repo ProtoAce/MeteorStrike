@@ -50,6 +50,7 @@
         "meteorite.h": "c",
         "graphics.hpp": "c",
         "cinttypes": "c",
-        "constants.h": "c"
+        "constants.h": "c",
+        "powerups.h": "c"
     }
 }

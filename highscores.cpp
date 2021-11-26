@@ -46,7 +46,6 @@ void Highscores::saveToFile(){
 }
 
 void Highscores::addScore(int score){
-    std::cout<<  "highscorecount upon adding score" << highScoreCount << "\n";
     if(highScoreCount < 10 || score > highScores.back()){
         if(highScoreCount < 10){
             highScoreCount++;
