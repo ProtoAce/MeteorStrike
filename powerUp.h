@@ -24,7 +24,7 @@ class PowerUp{
 
     void enable();
     void disable();
-
+    bool getStatus();
     void move();
     void moveOffScreen();
     int load();

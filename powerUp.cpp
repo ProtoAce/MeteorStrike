@@ -22,6 +22,8 @@ void PowerUp::move(){
 
 void PowerUp::moveOffScreen(){
     tokenSprite.setPosition(-30, -30);
+    xToken = -30;
+    yToken = -30;
 }
 
 int PowerUp::load(){
@@ -43,4 +45,8 @@ void PowerUp::enable(){
 
 void PowerUp::disable(){
     enabled = false;
+}
+
+bool PowerUp::getStatus(){
+    return enabled;
 }
