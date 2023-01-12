@@ -17,7 +17,8 @@ void MainMenu::start(){
     if(music->load() == EXIT_FAILURE){
         return;
     }
-    music->play();
+    music->pause();
+    music->setOpacity(0);
 
 
     menuLoop();
@@ -130,7 +131,15 @@ void MainMenu::menuLoop(){
                     }else{
                         menuOption --;
                     }
-                
+                }else if(event.key.code == sf::Keyboard::P){
+                    if(music->playing()){
+                        music->pause();
+                    }else{
+                        music->play();
+                    }
+                }else if(event.key.code == sf::Keyboard::N){
+                    music->nextSong();
+
                 }else if(event.key.code == sf::Keyboard::Enter){
                     gameOption(menuOption, playing);
                 }
@@ -146,6 +155,8 @@ void MainMenu::menuLoop(){
 
 
         win->clear();
+
+        music->draw();
 
         draw();
         drawSelection(menuOption);

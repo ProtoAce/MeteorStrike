@@ -28,6 +28,7 @@ void Game::gameLoop(){
     int prevDifficultyScoreMultiple = 1;
     int prevPowerUpMultiple = 1;
     shield = nullptr;
+    rapidShot = nullptr;
 
     bool playing = true;
 
@@ -37,12 +38,33 @@ void Game::gameLoop(){
             if(event.type == sf::Event::Closed){
                 win->close();
             }
+            if(event.type == sf::Event::KeyPressed){
+                if(event.key.code == sf::Keyboard::P){
+                    if(music->playing()){
+                        music->pause();
+                    }else{
+                        music->play();
+                    }
+                }else if(event.key.code == sf::Keyboard::N){
+                        music->nextSong();
+                }
+            }
+                
         }
+
         keyPressed(currentFrame);
 
-        if(currentFrame % settings.bulletShotDelay == 0){
-            bullets.push_back(generateBullet(BULLET_TEXTURE));
+
+        if( rapidShot!= nullptr && rapidShot->getStatus()){
+            if(currentFrame % rapidShot->rapidReload == 0){
+                bullets.push_back(generateBullet(BULLET_TEXTURE));
+            }
+        }else{
+            if(currentFrame % settings.bulletShotDelay == 0){
+                bullets.push_back(generateBullet(BULLET_TEXTURE));
+            }
         }
+
 
         if(score.score > 0){
             if(score.score >= DIFFICULTY_SCALE_RATE*prevDifficultyScoreMultiple){
@@ -59,10 +81,18 @@ void Game::gameLoop(){
 
             if(score.score >= POWER_UP_RATE*prevPowerUpMultiple){
                 prevPowerUpMultiple++;
-                if(shield == nullptr){
-                    shield = new Shield(win, SHIELD, randomX());
-                    shield->load();
-                    shield->loadShield();
+                if(prevPowerUpMultiple%2 == 0){
+                    if(shield == nullptr){
+                        shield = new Shield(win, SHIELD, randomX());
+                        shield->load();
+                        shield->loadShield();
+                    }
+                }else{
+                    if(rapidShot == nullptr){
+                        rapidShot = new RapidShot(win, RAPID_SHOT, randomX());
+                        rapidShot->load();
+                        rapidShot->loadRapidShot();
+                    }
                 }
 
             }
@@ -78,6 +108,8 @@ void Game::gameLoop(){
 
         win->clear();
 
+        //play and pause buttons
+        music->draw();
         //background
         //background.draw();
 
@@ -88,8 +120,13 @@ void Game::gameLoop(){
                 bullets.erase(i);
                 i--;
             }else{
-                (*i)->move(settings.bulletSpeed);
-                (*i)->draw();
+                if(rapidShot != nullptr && rapidShot->getStatus()){
+                    (*i)->move(rapidShot->rapidBulletSpeed);
+                    (*i)->draw();
+                }else{
+                    (*i)->move(settings.bulletSpeed);
+                    (*i)->draw();
+                }
             }
         } 
 
@@ -123,7 +160,27 @@ void Game::gameLoop(){
                 meteorites.erase(i);
                 i--;
             }
+        
         } 
+        if(rapidShot != nullptr){
+            if(rapidShot->getStatus()){
+                rapidShot->moveRapidShot(ship.getX(), ship.getY());
+                rapidShot->drawRapidShot();
+                rapidShot->rapidShotTimer--;
+                if(rapidShot->rapidShotTimer < 1){
+                    delete rapidShot;
+                    rapidShot = nullptr;
+                }
+
+            }else{
+                rapidShot->move();
+                rapidShot->draw();
+                if(rapidShot->yToken > 600){
+                    delete rapidShot;
+                    rapidShot = nullptr;
+                }
+            }
+        }
 
         if(shield != nullptr){
             if(shield->enabled){
@@ -152,13 +209,18 @@ void Game::gameLoop(){
         }
         
         //checks for powerUp collisions;
-        if(collisionLoopPowerUp()){
-            shield->enable();
+        if(collisionLoopPowerUp(shield)){
             shield->moveOffScreen();
+
+        }
+        if(collisionLoopPowerUp(rapidShot)){
+            rapidShot->rapidShotTimer = 90;
+            rapidShot->moveOffScreen();
+
         }
 
         score.draw();
-    
+
 
         win->display();
 
@@ -332,15 +394,16 @@ bool Game::collisionCheckPowerUp(Bullet* bullet, PowerUp* powerUp){
     return false;
 }
 
-bool Game::collisionLoopPowerUp(){
-    if(shield != nullptr){
+bool Game::collisionLoopPowerUp(PowerUp* powerUp){
+    if(powerUp != nullptr){
+
         for(std::vector<Bullet*>::iterator itBullet = bullets.begin(); itBullet != bullets.end(); itBullet++){
-            if(collisionCheckPowerUp((*itBullet), shield)){
+            if(collisionCheckPowerUp((*itBullet), powerUp)){
                 delete *itBullet;
                 bullets.erase(itBullet);
                 itBullet--;
-                shield->enabled = true;
-                break;
+                powerUp->enabled = true;
+                return true;
             }
 
         }

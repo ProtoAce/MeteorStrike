@@ -1,8 +1,8 @@
 #include "gameMusic.h"
 
 GameMusic::GameMusic(sf::RenderWindow *window){
-    opacity = 256;
-    playing = true;
+    opacity = 200;
+    playingMusic = true;
     currentSong = 0;
     win = window;
 }
@@ -33,32 +33,31 @@ int GameMusic::load(){
         return EXIT_FAILURE;
     }
     playSprite.setTexture(playTexture);
-    playSprite.setPosition(530,50);
+    playSprite.setPosition(580,10);
     if(!pauseTexture.loadFromFile(PAUSE_TEXTURE)){
         return EXIT_FAILURE;
     }
     pauseSprite.setTexture(pauseTexture);
-    pauseSprite.setPosition(530,50);
+    pauseSprite.setPosition(580,10);
 
     return 0;
 }
 
 void GameMusic::pause(){
-    playing = false;
-    opacity = 100;
+    playingMusic = false;
+    opacity = 200;
     music.pause();
 }
 
 void GameMusic::play(){
-    playing = true;
-    opacity = 256;
+    playingMusic = true;
+    opacity = 200;
     music.play();
 }
 
 bool GameMusic::songEnded(){
-    if(playing == true){
+    if(playingMusic == true){
         if(music.getStatus() == sf::SoundSource::Stopped){
-            currentSong = (currentSong + 1)%songs.size();
             return true;
         }
     }
@@ -67,7 +66,8 @@ bool GameMusic::songEnded(){
 
 
 int GameMusic::nextSong(){
-    if(playing == true){
+    currentSong = (currentSong + 1)%songs.size();
+    if(playingMusic == true){
         if (!music.openFromFile(songs.at(currentSong))){
             return EXIT_FAILURE;
         }
@@ -78,13 +78,21 @@ int GameMusic::nextSong(){
 
 void GameMusic::draw(){
     if(opacity > 0){
-        if(playing){
-            playSprite.setColor(sf::Color(255, 255, 255, opacity));
+        if(playingMusic){
+            playSprite.setColor(sf::Color(139,104,75, opacity));
             win->draw(playSprite);
         }else{
-            pauseSprite.setColor(sf::Color(255, 255, 255, opacity));
+            pauseSprite.setColor(sf::Color(139,104,75, opacity));
             win->draw(pauseSprite);
         }
-        opacity = opacity-2;
+        opacity = opacity-4;
     }
+}
+
+bool GameMusic::playing(){
+    return playingMusic;
+}
+
+void GameMusic::setOpacity(int op){
+    opacity = op;
 }

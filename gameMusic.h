@@ -32,7 +32,7 @@ class GameMusic{
 
     // std::vector<sf::Music *> music;
 
-    bool playing;
+    bool playingMusic;
     int currentSong;
     int opacity;
 
@@ -43,6 +43,8 @@ class GameMusic{
     int load();
     void draw();
 
+    void setOpacity(int op);
+    bool playing();
     void pause();
     void play();
     bool songEnded();

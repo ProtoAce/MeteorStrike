@@ -22,6 +22,7 @@
 #include "powerUp.h"
 #include "shield.h"
 #include "gameMusic.h"
+#include "rapidShot.h"
 
 
 class Game{
@@ -37,6 +38,7 @@ class Game{
     Settings settings;
     Background background;
     Shield *shield;
+    RapidShot *rapidShot;
 
     public:
     Game(sf::RenderWindow *window, GameMusic *musicVar);
@@ -64,7 +66,7 @@ class Game{
     bool collisionCheck(Bullet* bullet, Meteorite* meteorite);
     bool collisionCheckShip(Meteorite* meteorite);
     bool collisionCheckPowerUp(Bullet* bullet, PowerUp* powerUp);
-    bool collisionLoopPowerUp();
+    bool collisionLoopPowerUp(PowerUp* powerUp);
 
 
 
