@@ -30,7 +30,7 @@ const std::string BACKGROUND_STARS = "assets/sprites/background/stars2.png";
 const std::string SHIELD_TOKEN_TEXTURE = "assets/sprites/shieldToken.png";
 const std::string SHIELD_TEXTURE = "assets/sprites/shield.png";
 const std::string RAPID_SHOT_TOKEN_TEXTURE = "assets/sprites/rapidShotToken.png";
-const std::string RAPID_SHOT_TEXTURE = "assets/sprites/rapidShot.png";
+const std::string RAPID_SHOT_TEXTURE = "assets/sprites/rapidShotShots.png";
 const std::string PAUSE_TEXTURE = "assets/sprites/pause.png";
 const std::string PLAY_TEXTURE = "assets/sprites/play.png";
 const std::string SONG_1 = "assets/audio/songs/AdhesiveWombat-NightShade.ogg";
@@ -55,7 +55,7 @@ const int MAX_METEORITE_SPAWN_SPEED = 5;
 const int BUFF_SCALE_RATE = 10;
 const int DIFFICULTY_SCALE_RATE = 10;
 const int TOKEN_SPEED = 5;
-const int POWER_UP_RATE = 10;
+const int POWER_UP_RATE = 1;
 
 //powerup enum
 enum PowerUpTypes{
